@@ -36,8 +36,7 @@ public class GetTrainsHandler implements RequestHandler {
   public Optional<Response> handle(HandlerInput handlerInput) {
     try {
       final String speechText = getSpeectTextFromTrainTimes(stationTimesFetcher.getFeedData());
-      return handlerInput
-          .getResponseBuilder()
+      return handlerInput.getResponseBuilder()
           .withSpeech(speechText)
           .withSimpleCard("Next Train", speechText)
           .build();

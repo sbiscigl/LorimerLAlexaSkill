@@ -4,6 +4,7 @@ import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.model.SessionEndedRequest;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
@@ -22,6 +23,9 @@ public class NoContentHandler implements RequestHandler {
 
   @Override
   public Optional<Response> handle(HandlerInput handlerInput) {
-    return Optional.empty();
+    return handlerInput.getResponseBuilder()
+        .withSpeech(StringUtils.EMPTY)
+        .withSimpleCard(StringUtils.EMPTY, StringUtils.EMPTY)
+        .build();
   }
 }

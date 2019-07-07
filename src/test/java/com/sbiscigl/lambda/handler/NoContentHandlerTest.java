@@ -2,14 +2,21 @@ package com.sbiscigl.lambda.handler;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.*;
+import com.amazon.ask.model.ui.SimpleCard;
+import com.amazon.ask.model.ui.SsmlOutputSpeech;
+import com.amazon.ask.response.ResponseBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class NoContentHandlerTest extends HandlerTestBase {
 
@@ -43,6 +50,14 @@ public class NoContentHandlerTest extends HandlerTestBase {
   @Test
   public void shouldReturnNothingForAnyRequest() {
     HandlerInput handlerInput = mock(HandlerInput.class);
-    assertFalse(noContentHandler.handle(handlerInput).isPresent());
+    when(handlerInput.getResponseBuilder()).thenReturn(new ResponseBuilder());
+    Optional<Response> response = noContentHandler.handle(handlerInput);
+    assertTrue(response.isPresent());
+    Response resp = response.get();
+    SimpleCard card = (SimpleCard) resp.getCard();
+    SsmlOutputSpeech outputSpeech = (SsmlOutputSpeech) resp.getOutputSpeech();
+    assertEquals(StringUtils.EMPTY, card.getTitle());
+    assertEquals(StringUtils.EMPTY, card.getContent());
+    assertEquals("<speak></speak>", outputSpeech.getSsml());
   }
 }
